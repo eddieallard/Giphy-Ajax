@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>GIPHY</title>
+</head>
+
+<body>
+    <button data-person="Arnold Schwarzenegger">I'll be back</button>
+    <button data-person="Michael J Fox">
+        My happiness grows in
+    </button>
+
+    <button data-person="Lucille Ball">
+        Love yourself first and everything else falls into line.
+    </button>
+    <button data-person="Taylor Swift">
+        If you're horrible to me,
+    </button>
+    <button data-person="Samuel Jackson">
+        Far better is it to dare mighty things,
+    </button>
+
+    <div id="gifs-appear-here">
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript">
+    // Event listener for all button elements
+    $("button").on("click", function() {
+      // In this case, the "this" keyword refers to the button that was clicked
+      var person = $(this).attr("data-person");
+
+      // Constructing a URL to search Giphy for the name of the person who said the quote
+      var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+        person + "&api_key=BkaUZZWcFij6J7AoQj3WtPb1R2p9O6V9&limit=10";
+
+      // Performing our AJAX GET request
+      $.ajax({
+        url: queryURL,
+        method: "GET"
+      })
+        // ARRAY OF TOPICS SAVED TO VARIABLE NAMED TOPICS
+        var topics = ["Sports", "News", "Movies", "Cars", "Techy"];
+
+        // FOR LOOP TO APPEND A BUTTON FOR EACH STRING
+        for (i = 0; i < topics.length; i++) {
+
+            // CREATE BUTTONS IN THE HTML
+
+
+            // PLACE NON ANIMATED 10 GIF IMAGES ON PAGE WHEN USER CLICKS ON A BUTTON
+
+            // STILL GIPH IMAGE ANIMATES WHEN CLICKED ON
+
+            // GIF IMAGE STOPPED WHEN PRESSED
+
+            // DISPLAY GIF RATINGS UNDER PICTURES
+
+            // ADD FORM TO PAGE THAT TAKES VALUE FROM INPUT BOX AND ADDS TO TOPICS ARRAY
+
+            // MAKE A FUNCTION THAT TAKES EACH TOPIC IN ARRAY AND REMAKES THE BUTTONS ON PAGE
+        }}
+    </script>
+
+</body>
+
+</html>

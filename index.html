@@ -9,61 +9,72 @@
 </head>
 
 <body>
-    <button data-person="Arnold Schwarzenegger">I'll be back</button>
-    <button data-person="Michael J Fox">
-        My happiness grows in
+    <button data-topic="Sports">Sports</button>
+    <button data-topic="News">
+        Da News
     </button>
 
-    <button data-person="Lucille Ball">
-        Love yourself first and everything else falls into line.
+    <button data-topic="Movies">
+        Movies
     </button>
-    <button data-person="Taylor Swift">
-        If you're horrible to me,
+    <button data-topic="Cars">
+        Cars
     </button>
-    <button data-person="Samuel Jackson">
-        Far better is it to dare mighty things,
+    <button data-topic="Techy">
+        All things techy
     </button>
 
     <div id="gifs-appear-here">
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script type="text/javascript">
-    // Event listener for all button elements
-    $("button").on("click", function() {
-      // In this case, the "this" keyword refers to the button that was clicked
-      var person = $(this).attr("data-person");
-
-      // Constructing a URL to search Giphy for the name of the person who said the quote
-      var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
-        person + "&api_key=BkaUZZWcFij6J7AoQj3WtPb1R2p9O6V9&limit=10";
-
-      // Performing our AJAX GET request
-      $.ajax({
+    <script type="text/javascript">
+        // Event listener for all button elements
+        $("button").on("click", function () {
+        // In this case, the "this" keyword refers to the button that was clicked
+        var topic = $(this).attr("data-topic");
+        
+        // Performing our AJAX GET request
+        $.ajax({
         url: queryURL,
         method: "GET"
-      })
+        })
+        // After the data comes back from the API
+        .then(function (response) {
         // ARRAY OF TOPICS SAVED TO VARIABLE NAMED TOPICS
         var topics = ["Sports", "News", "Movies", "Cars", "Techy"];
 
         // FOR LOOP TO APPEND A BUTTON FOR EACH STRING
-        for (i = 0; i < topics.length; i++) {
+        for (var i = 0; i < topics.length; i++) {
+        var button = $('<button>' + topics[i] + '</button>')
 
-            // CREATE BUTTONS IN THE HTML
+        // CREATE BUTTONS IN THE HTML
+        $(".gifs-appear-here").append(button);
 
+        // PLACE NON ANIMATED 10 GIF IMAGES ON PAGE WHEN USER CLICKS ON A BUTTON
+        var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+        topics + "&api_key=KtSDmHGXP9azrYkXiBni2G0wX2dVhoCN=10";
+        // STILL GIPH IMAGE ANIMATES WHEN CLICKED ON, GIF IMAGE STOPPED WHEN PRESSED
+        $(".gif").on("click", function() {
+      var state = $(this).attr("data-state");
+      if (state === "still") {
+        $(this).attr("src", $(this).attr("data-animate"));
+        $(this).attr("data-state", "animate");
+      } else {
+        $(this).attr("src", $(this).attr("data-still"));
+        $(this).attr("data-state", "still");
+      }
+    });
+        // DISPLAY GIF RATINGS UNDER PICTURES
+        var gifDiv = $("<div>");
 
-            // PLACE NON ANIMATED 10 GIF IMAGES ON PAGE WHEN USER CLICKS ON A BUTTON
+        // ADD FORM TO PAGE THAT TAKES VALUE FROM INPUT BOX AND ADDS TO TOPICS ARRAY
 
-            // STILL GIPH IMAGE ANIMATES WHEN CLICKED ON
+        // MAKE A FUNCTION THAT TAKES EACH TOPIC IN ARRAY AND REMAKES THE BUTTONS ON PAGE
 
-            // GIF IMAGE STOPPED WHEN PRESSED
-
-            // DISPLAY GIF RATINGS UNDER PICTURES
-
-            // ADD FORM TO PAGE THAT TAKES VALUE FROM INPUT BOX AND ADDS TO TOPICS ARRAY
-
-            // MAKE A FUNCTION THAT TAKES EACH TOPIC IN ARRAY AND REMAKES THE BUTTONS ON PAGE
-        }}
+        }});
+        });
+        
     </script>
 
 </body>

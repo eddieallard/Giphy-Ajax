@@ -1,6 +1,5 @@
 var topics = ["Sports", "News", "Movies", "Cars", "Techy"];
 
-
 // Event listener for all button elements
 function showButtons() {
     $(".buttonsforthepage").empty();
@@ -12,8 +11,20 @@ function showButtons() {
         $(".buttonsforthepage").append(gifButtons);
     }
 }
+$("#add-movie-yo").on("click", function (event) {
+    // Preventing the buttons default behavior when clicked (which is submitting a form)
+    event.preventDefault();
+    // This line grabs the input from the textbox
+    var topic = $("#not-movie-input").val().trim();
+    console.log(topic);
 
+    // Adding the movie from the textbox to our array
+    topics.push(topic);
+    
 
+    // Calling showButtons which handles the processing of our movie array
+    showButtons();
+});
 
 $(document).on("click", ".button", function () {
     // In this case, the "this" keyword refers to the button that was clicked
@@ -30,53 +41,51 @@ $(document).on("click", ".button", function () {
         method: "GET"
     }).then(function (response) {
 
-            var results = response.data
+        var results = response.data
 
-            for (var i = 0; i < results.length; i++) {
+        for (var i = 0; i < results.length; i++) {
 
-                // DISPLAY GIF RATINGS UNDER PICTURES
-                var gifDiv = $("<div>");
-                var pTag = $("<p>");
-                var image = $("<img>");
+            // DISPLAY GIF RATINGS UNDER PICTURES
+            var gifDiv = $("<div>");
+            var pTag = $("<p>").text("rating: " + results[i].rating);
+            var image = $("<img>");
 
-                var fixedPic = results[i].images.fixed_height_still.url
-                var animatePic = results[i].images.fixed_height.url
+            var fixedPic = results[i].images.fixed_height_still.url
+            var animatePic = results[i].images.fixed_height.url
 
-                var ratePic = results[i].rating
+            image.attr("src", fixedPic)
+            image.attr("data-state", "still");
+            image.attr("data-animate", animatePic);
+            image.attr("data-still", fixedPic);
 
-                image.attr("src", fixedPic)
-                image.attr("data-state", "still");
-                image.attr("data-animate", animatePic);
-                image.attr("data-still", fixedPic);
+            //append img to gifDiv  
+            gifDiv.append(image);
 
-                //append img to gifDiv  
-                gifDiv.append(image);
-                //append gifDiv to your HTML element to hold your gifs
+            //append gifDiv to your HTML element to hold your gifs
+            gifDiv.append(pTag);
 
-                //create a var for <p>                  
-                //set paragraph text to the rating. (HINT: You named that shit "Rating" like 5 lines up)                                  
-                //append the <p> to gifDiv too.
-
-
-                // CREATE BUTTONS IN THE HTML
-                $(".gifs-appear-here").prepend(gifDiv);
-
-            };
-            });
-    
-
-        // STILL GIPH IMAGE ANIMATES WHEN CLICKED ON, GIF IMAGE STOPPED WHEN PRESSED
-        $(document).on("click", "img", function () {
-            var state = $(this).attr("data-state");
-            if (state === "still") {
-                $(this).attr("src", $(this).attr("data-animate"));
-                $(this).attr("data-state", "animate");
-            } else {
-                $(this).attr("src", $(this).attr("data-still"));
-                $(this).attr("data-state", "still");
-            }
-        });
+            //set paragraph text to the rating. (HINT: You named that shit "Rating" like 5 lines up)                                  
+            //append the <p> to gifDiv too.
 
 
+
+
+            // CREATE BUTTONS IN THE HTML
+            $(".gifs-appear-here").prepend(gifDiv);
+        };
+    });
+
+
+    // STILL GIPH IMAGE ANIMATES WHEN CLICKED ON, GIF IMAGE STOPPED WHEN PRESSED
+    $(document).on("click", "img", function () {
+        var state = $(this).attr("data-state");
+        if (state === "still") {
+            $(this).attr("src", $(this).attr("data-animate"));
+            $(this).attr("data-state", "animate");
+        } else {
+            $(this).attr("src", $(this).attr("data-still"));
+            $(this).attr("data-state", "still");
+        }
+    });
 });
 showButtons();

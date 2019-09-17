@@ -20,19 +20,20 @@ $("#add-movie-yo").on("click", function (event) {
 
     // Adding the movie from the textbox to our array
     topics.push(topic);
-    
 
-    // Calling showButtons which handles the processing of our movie array
+
+    // Calling showButtons which handles the processing of topics array
     showButtons();
 });
 
-$(document).on("click", ".button", function () {
+$(document).on("click", "button", function () {
     // In this case, the "this" keyword refers to the button that was clicked
-    var topics = $(this).attr("data-name");
+    event.preventDefault();
+    var topics = $(this).text().trim();
+    console.log(topics)
 
     // PLACE NON ANIMATED 10 GIF IMAGES ON PAGE WHEN USER CLICKS ON A BUTTON
-    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
-        topics + "&api_key=KtSDmHGXP9azrYkXiBni2G0wX2dVhoCN&limit=10";
+    var queryURL = "https://api.giphy.com/v1/gifs/search?api_key=KtSDmHGXP9azrYkXiBni2G0wX2dVhoCN&q=" + topics + "&limit=10&offset=0&rating=PG-13&lang=en";
 
 
     // Performing our AJAX GET request
@@ -40,18 +41,18 @@ $(document).on("click", ".button", function () {
         url: queryURL,
         method: "GET"
     }).then(function (response) {
+        console.log(response)
 
-        var results = response.data
-
-        for (var i = 0; i < results.length; i++) {
+        for (var i = 0; i < 9; i++) {
 
             // DISPLAY GIF RATINGS UNDER PICTURES
             var gifDiv = $("<div>");
-            var pTag = $("<p>").text("rating: " + results[i].rating);
+            // SET PARAGRAPH TEXT TO RATING ALSO    
+            var pTag = $("<p>").text("rating: " + response.data[i].rating);
             var image = $("<img>");
 
-            var fixedPic = results[i].images.fixed_height_still.url
-            var animatePic = results[i].images.fixed_height.url
+            var fixedPic = response.data[i].images.fixed_height_still.url
+            var animatePic = response.data[i].images.fixed_height.url
 
             image.attr("src", fixedPic)
             image.attr("data-state", "still");
@@ -64,17 +65,10 @@ $(document).on("click", ".button", function () {
             //append gifDiv to your HTML element to hold your gifs
             gifDiv.append(pTag);
 
-            //set paragraph text to the rating. (HINT: You named that shit "Rating" like 5 lines up)                                  
-            //append the <p> to gifDiv too.
-
-
-
-
             // CREATE BUTTONS IN THE HTML
             $(".gifs-appear-here").prepend(gifDiv);
         };
     });
-
 
     // STILL GIPH IMAGE ANIMATES WHEN CLICKED ON, GIF IMAGE STOPPED WHEN PRESSED
     $(document).on("click", "img", function () {
